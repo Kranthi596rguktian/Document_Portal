@@ -9,3 +9,7 @@
     a. in-memory
     b. on-disk
     c. cloud-based
+
+
+GroQ API KEY : https://console.groq.com/keys
+Gemini API KEY : https://aistudio.google.com/apikey
