@@ -1,0 +1,13 @@
+[2025-08-30 21:28:19,881] [ERROR] - Testing (line:30) - 
+        DocumentPortalException occurred:
+        File: C:\Users\Kranthi\AppData\Local\Temp\ipykernel_48332\2184398377.py
+        Line: 26
+        Message: division by zero
+        Traceback:
+        Traceback (most recent call last):
+  File "C:\Users\Kranthi\AppData\Local\Temp\ipykernel_48332\2184398377.py", line 26, in <module>
+    a = 1 / 0
+        ~~^~~
+ZeroDivisionError: division by zero
+
+        
