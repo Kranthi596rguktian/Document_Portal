@@ -1,5 +1,8 @@
-env
+doc_env
 .env
 document_portal.egg-info
 notebook/data/sample.pdf
 .gitignore
+__pycache__/
+*.pyc
+test.py
