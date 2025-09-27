@@ -6,3 +6,4 @@ notebook/data/sample.pdf
 __pycache__/
 *.pyc
 test.py
+logs/*
