@@ -7,3 +7,6 @@ __pycache__/
 *.pyc
 test.py
 logs/*
+src/document_analyzer/data_ingestion.py
+data/*
+logs/*
