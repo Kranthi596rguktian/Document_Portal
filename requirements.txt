@@ -8,6 +8,5 @@ pypdf
 faiss-cpu
 structlog
 PyMuPDF
-fitz
 requests
 -e .
