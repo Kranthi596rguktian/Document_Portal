@@ -33,9 +33,22 @@ class DocumentAnalyzer:
             raise DocumentPortalException("Failed to initialize Document Analyzer.", sys)
 
 
-    def analyse_document(self):
+    def analyse_document(self,document_text: str) -> dict:
+        """
+        Analyzes the document text and extracts metadata and summary.
+        """
         try:
-            pass
+            chain = self.prompt | self.llm | self.fixing_parser
+            self.log.info("Document analysis chain Initialized.")
+            
+            response = chain.invoke({
+                "format_instructions": self.parser.get_format_instructions(),
+                "document_text": document_text
+            })
+            self.log.info("Metadata extraction completed.", keys=list(response.keys()))
+            
+            return response
+            
         except Exception as e:
             self.log.error("Error analyzing document.", error=str(e))
             raise DocumentPortalException("Failed to analyze document.", sys)

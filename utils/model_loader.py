@@ -40,7 +40,7 @@ class ModelLoader:
             log.error("Error loading Embeddings model: %s", e)
             raise DocumentPortalException("Error loading Embeddings model",sys)
 
-    def load_llm(self):
+    def load_model(self):
         """
         Load and return the LLM model.
         Load LLM dynamically based on provider in config."""
