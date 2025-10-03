@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, RootModel
 from typing import Optional, List, Dict, Any
 
 class Metadata(BaseModel):
@@ -15,3 +15,11 @@ class Metadata(BaseModel):
     SocialLinks: Optional[Dict[str, str]] = Field(None, description="Social media or professional profile links.")
     AdditionalInfo: Optional[Dict[str, Any]] = Field(None, description="Any additional information that doesn't fit into the above categories.")
     
+    
+class ChangeFormat(BaseModel):
+    Page: str
+    Changes: str
+    
+class SummaryResponse(RootModel[List[ChangeFormat]]):
+    pass
+

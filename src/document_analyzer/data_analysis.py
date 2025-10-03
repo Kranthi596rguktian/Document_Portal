@@ -6,7 +6,7 @@ from exception.custom_exception import DocumentPortalException
 from model.models import *
 from langchain_core.output_parsers import JsonOutputParser
 from langchain.output_parsers import OutputFixingParser
-from prompt import prompt_library
+from prompt.prompt_library import PROMPT_REGISTRY
 
 class DocumentAnalyzer:
     """
@@ -25,7 +25,7 @@ class DocumentAnalyzer:
                 llm=self.llm,
                 parser=self.parser
             )
-            self.prompt = prompt_library.prompt
+            self.prompt = PROMPT_REGISTRY["document_analysis_prompt"]
             self.log.info("Document Analyzer initialized.")
 
         except Exception as e:
