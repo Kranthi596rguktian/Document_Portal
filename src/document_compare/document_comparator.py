@@ -12,19 +12,36 @@ from utils.model_loader import ModelLoader
 
 class DocumentComparatorLLM:
     def __init__(self):
-        pass
+        load_dotenv()
+        self.log = CustomLogger().get_logger(__name__)
+        self.loader = ModelLoader()
+        self.llm = self.loader.load_model()
+        self.parser = JsonOutputParser(pydantic_object=SummaryResponse)
+        self.fixing_parser = OutputFixingParser.from_llm(parser=self.parser,llm=self.llm)
+        self.prompt = PROMPT_REGISTRY['document_comparison_prompt']
+        self.chain = self.prompt | self.llm | self.pasrser | self.fixing_parser
+        
+        self.log.info("DocumentComparatorLLM initialized successfully.")
     
     def compare_documents(self):
         """
         Compares two documents and identifies differences.
         """
-        pass
+        try:
+            pass
+        except Exception as e:
+            self.log.error(f"Error in compare_documents: {e}")
+            raise DocumentPortalException("Error occurred while comparing documents.",sys)
     
     def _format_response(self):
         """
         Formats the comparison response.
         """
-        pass
+        try:
+            pass
+        except Exception as e:
+            self.log.error(f"Error in _format_response: {e}")
+            raise DocumentPortalException("Error occurred while formatting response.",sys)
     
     
     
