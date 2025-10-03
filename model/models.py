@@ -1,3 +1,4 @@
+from enum import Enum
 from pydantic import BaseModel, Field, RootModel
 from typing import Optional, List, Dict, Any
 
@@ -22,4 +23,10 @@ class ChangeFormat(BaseModel):
     
 class SummaryResponse(RootModel[List[ChangeFormat]]):
     pass
+
+class PromptType(str,Enum):
+    DOCUMENT_ANALYSIS = "document_analysis"
+    DOCUMENT_COMPARISON = "document_comparison"
+    CONTEXTUALIZE_QUESTION = "contextualize_question"
+    CONTEXT_QA = "context_qa"
 

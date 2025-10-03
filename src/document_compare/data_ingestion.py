@@ -1,39 +1,43 @@
 import sys
 from pathlib import Path
+import uuid
 import fitz
+from datetime import datetime, timezone
 from logger.custom_logger import CustomLogger
 from exception.custom_exception import DocumentPortalException
 
 
 class DocumentIngestion:
-    def __init__(self,base_dir: str = "data/document_compare/"):
+    def __init__(self,base_dir: str = "data/document_compare/",session_id=None):
         self.log = CustomLogger().get_logger(__name__)
         self.base_dir = Path(base_dir)
-        self.base_dir.mkdir(parents=True, exist_ok=True)
-    
-    def delete_existing_files(self):
-        """
-        Deletes existing files at the specified paths.
-        """
-        try:
-            if self.base_dir.exists() and self.base_dir.is_dir():
-                for file in self.base_dir.iterdir():
-                    if file.is_file():
-                        file.unlink()
-                        self.log.info("File deleted",file=str(file))
-                self.log.info("All existing files deleted successfully.")
-        except Exception as e:
-            self.log.error(f"Error deleting existing files: {e}")
-            raise DocumentPortalException("An error occurred while deleting existing files.", sys)
+        self.session_id = session_id or f"session_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+        self.session_path = self.base_dir / self.session_id
+        self.session_path.mkdir(parents=True, exist_ok=True)
+        
+        self.log.info("DocumentIngestion initialized successfully.",session_id=self.session_id,session_path=str(self.session_path))
+        
+    # # def delete_existing_files(self):
+    #     """
+    #     Deletes existing files at the specified paths.
+    #     """
+    #     try:
+    #         if self.base_dir.exists() and self.base_dir.is_dir():
+    #             for file in self.base_dir.iterdir():
+    #                 if file.is_file():
+    #                     file.unlink()
+    #                     self.log.info("File deleted",file=str(file))
+    #             self.log.info("All existing files deleted successfully.")
+    #     except Exception as e:
+    #         self.log.error(f"Error deleting existing files: {e}")
+    #         raise DocumentPortalException("An error occurred while deleting existing files.", sys)
     
     def save_uploaded_files(self,reference_file,actual_file):
         """
         Saves the uploaded files to the specified paths.
         """
         try:
-            self.delete_existing_files()
-            self.log.info("Uploaded files saved successfully.")
-            
+            # self.delete_existing_files()
             ref_path = self.base_dir / reference_file.name
             act_path = self.base_dir / actual_file.name
             
@@ -96,3 +100,24 @@ class DocumentIngestion:
         except Exception as e:
             self.log.error(f"Error in combined_documents: {e}")
             raise DocumentPortalException("Error occurred while combining documents.",sys)
+        
+
+    def clean_old_sessions(self,keep_latest:int=3):
+        """
+        Cleans old session files, keeping only the latest 'keep_latest' files.
+        """
+        try:
+            session_folders = sorted(
+                [f for f in self.base_dir.iterdir() if f.is_dir()],
+                reverse=True
+            )
+            for folder in session_folders[keep_latest:]:
+                for file in folder.iterdir():
+                    if file.is_file():
+                        file.unlink()
+                        self.log.info("Old file deleted",path=str(file))
+                folder.rmdir()
+                self.log.info("Old session folder deleted",path=str(folder))
+        except Exception as e:
+            self.log.error(f"Error cleaning old sessions: {e}")
+            raise DocumentPortalException("An error occurred while cleaning old sessions.", sys)
