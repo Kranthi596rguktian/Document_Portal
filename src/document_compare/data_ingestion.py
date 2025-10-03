@@ -6,7 +6,7 @@ from exception.custom_exception import DocumentPortalException
 
 
 class DocumentIngestion:
-    def __init__(self,base_dir):
+    def __init__(self,base_dir: str = "data/document_compare/"):
         self.log = CustomLogger().get_logger(__name__)
         self.base_dir = Path(base_dir)
         self.base_dir.mkdir(parents=True, exist_ok=True)
@@ -74,3 +74,25 @@ class DocumentIngestion:
         except Exception as e:
             self.log.error(f"Error reading PDF: {e}")
             raise DocumentPortalException("An error occurred while reading the PDF.", sys)
+        
+        
+    def combined_documents(self) -> str:
+        try:
+            content_dict = {}
+            doc_parts = []
+            
+            for filename in sorted(self.base_dir.iterdir()):
+                if filename.is_file() and filename.suffix == '.pdf':
+                    content_dict[filename.name] = self.read_pdf(filename)
+            
+            for filename, content in content_dict.items():
+                doc_parts.append(f"=== Document: {filename} ===\n{content}\n")
+                
+            combined_text = "\n".join(doc_parts)
+            self.log.info("Documents combined successfully.",files=list(content_dict.keys()))
+            return combined_text
+
+
+        except Exception as e:
+            self.log.error(f"Error in combined_documents: {e}")
+            raise DocumentPortalException("Error occurred while combining documents.",sys)
