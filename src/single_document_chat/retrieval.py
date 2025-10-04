@@ -73,6 +73,7 @@ class ConversationalRAG:
                 self.log.info("New chat session history created", session_id = session_id)
                 
             return st.session_state.store[session_id]
+
         
         except Exception as e:
             self.log.error(f"Error in _get_session_history: {e}")
