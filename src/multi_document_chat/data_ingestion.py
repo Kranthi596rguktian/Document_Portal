@@ -8,10 +8,9 @@ from langchain_community.vectorstores import FAISS
 from logger.custom_logger import CustomLogger
 from exception.custom_exception import DocumentPortalException
 from utils.model_loader import ModelLoader
-
 class DocumentIngestor:
     SUPPORTED_EXTENSIONS = {'.pdf', '.docx', '.txt', '.md'}
-    def __init(self, temp_dir:str = "data/multi_doc_chat",faiss_dir: str = "faiss_index", session_id: str | None = None):
+    def __init__(self, temp_dir:str = "data/multi_doc_chat",faiss_dir: str = "faiss_index", session_id: str | None = None):
         try:
             self.log = CustomLogger().get_logger(__name__)
             
@@ -21,6 +20,7 @@ class DocumentIngestor:
             self.faiss_dir = Path(faiss_dir)
             self.temp_dir.mkdir(parents=True, exist_ok=True)
             self.faiss_dir.mkdir(parents=True, exist_ok=True)
+            
             # sessionized paths
             self.session_id = session_id or f"session_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
             self.session_temp_dir = self.temp_dir / self.session_id
@@ -41,8 +41,9 @@ class DocumentIngestor:
         except Exception as e:
             self.log.error("Failed to initialize DocumentIngestor", error=str(e))
             raise DocumentPortalException("Initialization error in DocumentIngestor", sys)
+            
     
-    def ingest_file(self,uploaded_files):
+    def ingest_files(self,uploaded_files):
         try:
             documents=[]
             
@@ -76,7 +77,7 @@ class DocumentIngestor:
                 
             self.log.info("All documents loaded", total_docs=len(documents), session_id=self.session_id)
             return self._create_retriever(documents)
-        
+                  
         except Exception as e:
             self.log.error("Failed to ingest files", error=str(e))
             raise DocumentPortalException("Ingestion error in DocumentIngestor", sys)
