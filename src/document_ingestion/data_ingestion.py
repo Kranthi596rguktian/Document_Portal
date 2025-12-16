@@ -113,10 +113,10 @@ class ChatIngestor:
             self.faiss_dir = self._resolve_dir(self.faiss_base)
 
             log.info("ChatIngestor initialized",
-                      session_id=self.session_id,
-                      temp_dir=str(self.temp_dir),
-                      faiss_dir=str(self.faiss_dir),
-                      sessionized=self.use_session)
+                    session_id=self.session_id,
+                    temp_dir=str(self.temp_dir),
+                    faiss_dir=str(self.faiss_dir),
+                    sessionized=self.use_session)
         except Exception as e:
             log.error("Failed to initialize ChatIngestor", error=str(e))
             raise DocumentPortalException("Initialization error in ChatIngestor", e) from e
