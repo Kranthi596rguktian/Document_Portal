@@ -18,14 +18,14 @@ class DocumentAnalyzer:
         self.log = CustomLogger().get_logger(__name__)
         try:
             self.loader = ModelLoader()
-            self.llm = self.loader.load_model()
+            self.llm = self.loader.load_llm()
 
             self.parser = JsonOutputParser(pydantic_object=Metadata)
             self.fixing_parser = OutputFixingParser.from_llm(
                 llm=self.llm,
                 parser=self.parser
             )
-            self.prompt = PROMPT_REGISTRY["document_analysis_prompt"]
+            self.prompt = PROMPT_REGISTRY["document_analysis"]
             self.log.info("Document Analyzer initialized.")
 
         except Exception as e:
@@ -33,7 +33,7 @@ class DocumentAnalyzer:
             raise DocumentPortalException("Failed to initialize Document Analyzer.", sys)
 
 
-    def analyse_document(self,document_text: str) -> dict:
+    def analyze_document(self,document_text: str) -> dict:
         """
         Analyzes the document text and extracts metadata and summary.
         """
