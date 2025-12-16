@@ -91,7 +91,8 @@ class FaissManager:
         self.vs = FAISS.from_texts(texts=texts, embedding=self.emb, metadatas=metadatas or [])
         self.vs.save_local(str(self.index_dir))
         return self.vs
-
+        
+        
 class ChatIngestor:
     def __init__( self,
         temp_base: str = "data",
@@ -168,6 +169,9 @@ class ChatIngestor:
             log.error("Failed to build retriever", error=str(e))
             raise DocumentPortalException("Failed to build retriever", e) from e
 
+            
+        
+            
 class DocHandler:
     """
     PDF save + read (page-wise) for analysis.
@@ -209,6 +213,7 @@ class DocHandler:
         except Exception as e:
             log.error("Failed to read PDF", error=str(e), pdf_path=pdf_path, session_id=self.session_id)
             raise DocumentPortalException(f"Could not process PDF: {pdf_path}", e) from e
+
 class DocumentComparator:
     """
     Save, read & combine PDFs for comparison with session-based versioning.
