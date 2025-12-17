@@ -12,4 +12,6 @@ data/*
 logs/*
 faiss_index/*
 archive
+data
+
 
