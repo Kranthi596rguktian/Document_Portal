@@ -1,3 +1,5 @@
+#This file automates the process of building your Docker image, 
+#pushing it to AWS ECR, and deploying it to AWS ECS Fargate after your tests pass, all using GitHub Actions.
 name: CI/CD to ECS Fargate
 on:
   workflow_run:
