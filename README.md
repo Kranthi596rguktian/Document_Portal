@@ -65,3 +65,9 @@ git clone https://github.com/sunnysavita10/document_portal.git
 ### Gemini API Key
 - [Get your API Key](https://aistudio.google.com/apikey)  
 - [Gemini Documentation](https://ai.google.dev/gemini-api/docs/models)
+
+
+## Docker CMD
+
+- To build : docker build -t document-portal-system . 
+- To run : docker run -d -p 8093:8080 --name my-doc-portal-container Document_Portal
